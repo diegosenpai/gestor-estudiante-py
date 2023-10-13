@@ -4,7 +4,7 @@ class Nota :
         self.__valor = valor
     
     def getNombreMateria(self):
-        return self.__materia
+        return self.__nombreMateria
     
     def getValorNota(self):
         return self.__valor

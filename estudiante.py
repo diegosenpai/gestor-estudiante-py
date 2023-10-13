@@ -13,6 +13,16 @@ class Estudiante:
                 total += item.getValorNota()
             return total / items
     
+    def getNombreEstudiante(self):
+        return self.__nombreEstudiante
+    
+    def getCalificacionesEstudiante(self):
+        return self.__calificaciones
+    
+    def imprimirNotas(self):
+        print("Panic Attack")
+        pass        
+    
     def __str__(self) :
-        msg = "nombre estudiante {0} promedio {1}"
+        msg = "Nombre Estudiante: {0} promedio {1}"
         return msg.format(self.__nombreEstudiante,self.obtenerPromedioEstudiante())
