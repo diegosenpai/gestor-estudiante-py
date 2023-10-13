@@ -51,8 +51,7 @@ Recibe como parametro un diccionario que representa el estudiante consultado
 """
 def imprimirEstudiante(estudiante):
     print(estudiante)
-    print(estudiante.imprimirNotas())
-    print("acaba aqui")
+    estudiante.imprimirNotas()
 
 """
 Función que permite calcular el promedio de un estudiante
@@ -148,7 +147,6 @@ while True:
             if existeEstudianteEnBDD(nombreBuscar):
                 estudiante = buscarEstudiantePorNombre(nombreBuscar)
                 imprimirEstudiante(estudiante)
-                print("weirdo")
             else:
                 print(f"El nombre ingresado:{nombreBuscar} no se encuentra registrado")
         elif valorIngresado == 5:

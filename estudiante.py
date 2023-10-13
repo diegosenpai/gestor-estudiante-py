@@ -20,9 +20,10 @@ class Estudiante:
         return self.__calificaciones
     
     def imprimirNotas(self):
-        print("Panic Attack")
-        pass        
+        print("+++++++ Materias")
+        for nota in self.__calificaciones:
+            print(f"+++++++++++ Materia: {nota.getNombreMateria()} Calificacion: {nota.getValorNota():.2f}")
     
     def __str__(self) :
-        msg = "Nombre Estudiante: {0} promedio {1}"
+        msg = "Nombre Estudiante: {0} promedio {1:.2f}"
         return msg.format(self.__nombreEstudiante,self.obtenerPromedioEstudiante())
