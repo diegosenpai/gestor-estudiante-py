@@ -9,66 +9,15 @@ import os
 import time
 from estudiante import Estudiante
 from nota import Nota
+from gestor import GestorEstudiante
 
-base_de_datos = []
 
 """
 Lambda que permite borrar contenido de la pantalla
 """
 clear = lambda: os.system('cls')
 
-
-def agregar_estudiante (estudiante):
-    base_de_datos.append(estudiante)
-
-"""
-Función que permite verificar si un estudiante
-se encuentra registrado en la base de la aplicación.
-Recibe como parametro el nombre a buscar.
-retorna True si el existe un estudiante con ese nombre
-o False si no existe registro de un estudiante con ese nombre
-"""
-def existeEstudianteEnBDD(nombreEstudiante):
-    for item in base_de_datos:
-        if item.getNombreEstudiante() == nombreEstudiante:
-            return True
-    return False
-
-"""
-Busca un estudiante por su nombre
-Recibe como parametro una cadena que contiene el nombre del estudiante a buscar
-retorna un diccionario que contiene como clave el nombre del estudiante y valor
-una lista de tuplas. Cada tupla contiene el nombre de la materia y su nota.
-"""
-def buscarEstudiantePorNombre(nombreEstudiante):
-    for item in base_de_datos:
-        if item.getNombreEstudiante() == nombreEstudiante:
-            return item
-
-"""
-Función que permite imprimir en pantalla la informacion del estudiante
-Recibe como parametro un diccionario que representa el estudiante consultado
-"""
-def imprimirEstudiante(estudiante):
-    print(estudiante)
-    estudiante.imprimirNotas()
-
-"""
-Función que permite calcular el promedio de un estudiante
-Recibe como parametro el nombre del estudiante como una cadena de caracteres
-Retorna un valor decimal que contiene el promedio calculado a partir de la
-lista de tuplas de materias asociado al estudiante ingresado
-"""
-def obtenerPromedioPorEstudiante(nombreEstudiante):
-    unEstudiante = buscarEstudiantePorNombre(nombreEstudiante)    
-    return unEstudiante.obtenerPromedioEstudiante()
-
-"""
-Función utilitaria que permite ordenar la lista de estudiantes
-definida como base de datos de la aplicación.
-"""
-def protoLambda (item):    
-    return item.obtenerPromedioEstudiante()
+gestorEstudiante = GestorEstudiante([])
 
 
 
@@ -83,6 +32,10 @@ def obtenerListaMaterias(listaMaterias,listaCalificaciones):
         contador = contador + 1
     return materias
 
+def imprimirEstudiante(estudiante):
+    print(estudiante)
+    estudiante.imprimirNotas()
+
 """
 Función que permite imprimir el contenido de la lista de
 diccionarios que cumple el objetivo de base de datos de la aplicación
@@ -90,6 +43,10 @@ diccionarios que cumple el objetivo de base de datos de la aplicación
 def imprimirContenido (baseAplicacion):
     for item in baseAplicacion:
         imprimirEstudiante(item)
+
+def imprimirEstudiante(estudiante):
+        print(estudiante)
+        estudiante.imprimirNotas()
 
 while True:
     print("Bienvenido a Gestion de Estudiantes")
@@ -126,26 +83,29 @@ while True:
                         break;
                     else:
                         print(f"El valor ingresado como nota:{nota} no correponde a una nota valida")
-            asignaturas = obtenerListaMaterias(materias,notas)            
-            unEstudiante = Estudiante(nombreEstudiante,asignaturas)
-            agregar_estudiante(unEstudiante)
+            if gestorEstudiante.existeEstudianteEnBDD(nombreEstudiante) :
+                print(f"El estudiante {nombreEstudiante} ya se encuentra registrado")
+            else:
+                asignaturas = obtenerListaMaterias(materias,notas)            
+                unEstudiante = Estudiante(nombreEstudiante,asignaturas)
+                gestorEstudiante.agregarEstudianteABase(unEstudiante)
         elif valorIngresado == 2 :
             nombreIngresado = input("Ingrese el nombre del estudiante para calcular su promedio\n")
-            if existeEstudianteEnBDD(nombreIngresado):
-                promedioCalculado = obtenerPromedioPorEstudiante(nombreIngresado)
+            if gestorEstudiante.existeEstudianteEnBDD(nombreIngresado):
+                promedioCalculado = gestorEstudiante.obtenerPromedioPorEstudiante(nombreIngresado)
                 print(f"El promedio para {nombreIngresado} es {promedioCalculado:.2f}")
             else:
                 print(f"El nombre ingresado: {nombreIngresado} no se encuentra registrado")
 
         elif valorIngresado == 3:
-            if len(base_de_datos) >0 :
-                imprimirContenido(sorted(base_de_datos,key = protoLambda, reverse = True))
+            if gestorEstudiante.existenRegistrosEnBase() :
+                imprimirContenido(gestorEstudiante.obtenerBaseOrdenada())
             else:
                 print("No existen registros en la aplicación. Seleccione la opcíon 1 para registrar un estudiante.")
         elif valorIngresado == 4:
             nombreBuscar = input("Ingrese el nombre del estudiante a consultar: ")
-            if existeEstudianteEnBDD(nombreBuscar):
-                estudiante = buscarEstudiantePorNombre(nombreBuscar)
+            if gestorEstudiante.existeEstudianteEnBDD(nombreBuscar):
+                estudiante = gestorEstudiante.buscarEstudiantePorNombre(nombreBuscar)
                 imprimirEstudiante(estudiante)
             else:
                 print(f"El nombre ingresado:{nombreBuscar} no se encuentra registrado")

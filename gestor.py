@@ -19,10 +19,15 @@ class GestorEstudiante():
             if item.getNombreEstudiante() == nombreEstudiante:
                 return item
 
-    def imprimirEstudiante(estudiante):
-        print(estudiante)
-        estudiante.imprimirNotas()
-
     def obtenerPromedioPorEstudiante(self,nombreEstudiante):
         unEstudiante = self.buscarEstudiantePorNombre(nombreEstudiante)    
         return unEstudiante.obtenerPromedioEstudiante()
+
+    def existenRegistrosEnBase(self):
+        if len(self.__baseDatos) >0:
+            return True
+        return False
+    
+   
+    def obtenerBaseOrdenada(self):
+        return sorted(self.__baseDatos,key=lambda e: e.obtenerPromedioEstudiante(),reverse=True)
