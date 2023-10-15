@@ -56,7 +56,7 @@ while True:
     print("4. Mostrar Información de Estudiante")
     print("5. Salir")
     opcion = input("Ingrese su opción: ")
-    if opcion.isdigit() :
+    try :
         valorIngresado = int(opcion)
         if valorIngresado > 5:
             print(f"El texto ingresado {opcion} no es una opción válida. Regresando al menú principal")
@@ -77,11 +77,11 @@ while True:
             for materia in materias:
                 while True :
                     nota = input(f"Ingrese la nota  para la materia {materia}: \n")
-                    if nota.isdigit() and float(nota) > 0:
+                    try :
                         valor = float(nota)
                         notas.append(valor)
                         break;
-                    else:
+                    except ValueError:
                         print(f"El valor ingresado como nota:{nota} no correponde a una nota valida")
             if gestorEstudiante.existeEstudianteEnBDD(nombreEstudiante) :
                 print(f"El estudiante {nombreEstudiante} ya se encuentra registrado")
@@ -112,7 +112,7 @@ while True:
         elif valorIngresado == 5:
             print("Ha seleccionado salir...Hasta Luego")
             break
-    else:
+    except ValueError:
         print(f"El texto ingresado {opcion} no es una opción válida. Regresando al menú principal")
         time.sleep(2)
         clear()
